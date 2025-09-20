@@ -1,4 +1,5 @@
 import { afterEveryRender, afterNextRender, Component, effect, OnChanges, OnInit, signal } from '@angular/core';
+import { TitleComponent } from '../../components/title/title.component';
 
 const log = (...messages: string[]) => {
   console.log(
@@ -9,7 +10,7 @@ const log = (...messages: string[]) => {
 
 @Component({
   selector: 'app-home-page',
-  imports: [],
+  imports: [TitleComponent],
   templateUrl: './home-page.component.html',
 })
 export class HomePageComponent implements OnInit, OnChanges {
@@ -19,10 +20,6 @@ export class HomePageComponent implements OnInit, OnChanges {
   // 🛠️ Creation - Standard JavaScript class constructor . Runs when Angular instantiates the component.
   constructor() {
     log('🛠️ Constructor called');
-
-    setTimeout(() => {
-      this.signalProperty.set('Van the one 1️⃣');
-    }, 2000)
   }
 
   changeTraditional() {
