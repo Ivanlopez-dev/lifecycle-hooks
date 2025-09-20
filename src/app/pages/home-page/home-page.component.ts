@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { afterEveryRender, afterNextRender, Component, effect, OnChanges, OnInit } from '@angular/core';
 
 const log = (...messages: string[]) => {
   console.log(
@@ -12,11 +12,21 @@ const log = (...messages: string[]) => {
   imports: [],
   templateUrl: './home-page.component.html',
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit, OnChanges {
+  // 🛠️ Creation - Standard JavaScript class constructor . Runs when Angular instantiates the component.
   constructor() {
     log('🚧 Constructor llamado');
   }
 
+  basicEffect = effect((onCleanup) => {
+    log('effect', "Runs secondary Effects");
+
+    onCleanup(() => {
+      log('onCleanup', 'Runs once the effect is about to be destroyed.')
+    })
+  })
+
+  // ✨ Change Detection
   ngOnInit() {
     log('ngOnInit', "Runs once after Angular has initialized all the component's inputs.");
   }
@@ -45,4 +55,17 @@ export class HomePageComponent {
     log('ngAfterViewChecked', "Runs every time the component's view has been checked for changes.");
   }
 
+  // 💡 Rendering
+  afterNextRenderEffect = afterNextRender(() => {
+    log('afterNextRender', "Runs once the next time that all components have been rendered to the DOM.")
+  })
+
+  afterEveryRenderEffect = afterEveryRender(() => {
+    log('afterEveryRender', "Runs every time all components have been rendered to the DOM.")
+  })
+
+  // 🔥 Destruction
+  ngOnDestroy() {
+    log('ngOnDestroy', "Runs once before the component is destroyed.")
+  }
 }
